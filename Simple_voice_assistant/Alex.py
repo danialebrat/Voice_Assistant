@@ -84,8 +84,10 @@ def run_alexa():
     else:
         talk('please say the command again')
 
-while True:
-    run_alexa()
+if __name__ == "__main__":
+
+    while True:
+        run_alexa()
 
 
 
