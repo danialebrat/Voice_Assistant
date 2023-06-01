@@ -25,9 +25,14 @@ def take_command():
             voice = listener.listen(source)
             command = listener.recognize_google(voice)
             print(command)
+            return command
     except:
-        pass
-    return command
+        print("repeat the question again")
+
+
+def play_song_spotify(song_name):
+    spotify_url = f"https://open.spotify.com/search/{song_name.replace(' ', '%20')}"
+    webbrowser.open(spotify_url)
 
 def run_alexa():
     command = take_command()
@@ -49,18 +54,10 @@ def run_alexa():
             talk(f"Playing {song_name}.")
             pywhatkit.playonyt(song_name)
 
-    elif 'time' in command:
+    elif 'time' in command.lower():
         time = datetime.datetime.now().strftime('%I:%M %p')
         talk('Current time is ' + time)
 
-    elif 'who is' in command:
-        person = command.replace('who is ', '')
-        info = wikipedia.summary(person, 1)
-        print(info)
-        talk(info)
-
-    elif 'are you single' in command:
-        talk('I am in a relationship with wifi')
 
     elif "youtube" in command.lower():
         talk("What would you like me to find on YouTube?")
@@ -69,17 +66,32 @@ def run_alexa():
             talk(f"Searching YouTube for {search_term}.")
             webbrowser.open(f"https://www.youtube.com/results?search_query={search_term}")
 
-    elif 'joke' in command:
+    # Access wikipedia
+    elif 'wikipedia' in command.lower():
+        talk('searching wekipedia...')
+        query = command.replace('wikipedia', '')
+        result = wikipedia.summary(query, sentences=2)
+        print(result)
+        talk(result)
+
+    # Access Google
+    elif 'google ' in command.lower():
+        webbrowser.open('https://www.google.com/')
+
+    # Access spotify Music playing from jiosaavn
+    elif "play music" in command.lower():
+        talk("What song would you like me to play?")
+        song_name = take_command()
+        if song_name:
+            talk(f"Playing {song_name}.")
+            play_song_spotify(song_name)
+
+    # Access mail inbox
+    elif 'mail' in command.lower() or 'Gmail' in command.lower():
+        webbrowser.open('https://mail.google.com/')
+
+    elif 'joke' in command.lower():
         talk(pyjokes.get_joke())
-
-    elif 'learn' in command:
-        talk('They will learn so much exciting things about Artificial Intelligence, and they will learn how to build me!')
-
-    elif 'any other projects' in command:
-        talk('It depends on their speed! they can learn how to create an AI that solves soduku, and also exciting snake game, or even better, reverse snake GAME!')
-
-    elif 'goodbye Alex' in command:
-        talk('No worries, It was my pleasure to be a part of this trial session. I wish the good luck for all the students.')
 
     else:
         talk('please say the command again')
