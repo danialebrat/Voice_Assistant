@@ -1,3 +1,18 @@
+"""
+pip install SpeechRecognition
+pip install pyttsx3
+pip install pywhatkit
+pip install wikipedia
+pip install pyjokes
+
+
+
+"""
+
+
+
+
+
 import speech_recognition as sr
 import pyttsx3
 import pywhatkit
@@ -30,10 +45,6 @@ def take_command():
         print("repeat the question again")
 
 
-def play_song_spotify(song_name):
-    spotify_url = f"https://open.spotify.com/search/{song_name.replace(' ', '%20')}"
-    webbrowser.open(spotify_url)
-
 def run_alexa():
     command = take_command()
     print(command)
@@ -55,7 +66,7 @@ def run_alexa():
             pywhatkit.playonyt(song_name)
 
     elif 'time' in command.lower():
-        time = datetime.datetime.now().strftime('%I:%M %p')
+        time = datetime.datetime.now()
         talk('Current time is ' + time)
 
 
@@ -77,14 +88,6 @@ def run_alexa():
     # Access Google
     elif 'google ' in command.lower():
         webbrowser.open('https://www.google.com/')
-
-    # Access spotify Music playing from jiosaavn
-    elif "play music" in command.lower():
-        talk("What song would you like me to play?")
-        song_name = take_command()
-        if song_name:
-            talk(f"Playing {song_name}.")
-            play_song_spotify(song_name)
 
     # Access mail inbox
     elif 'mail' in command.lower() or 'Gmail' in command.lower():
